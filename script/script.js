@@ -1,10 +1,33 @@
+class main_menu extends Phaser.Scene {
+    constructor(){
+        super('main_menu');
+    }
+    preload(){
+        this.load.image('background', './assets/pixel_space.jpg');
+    }
+    create(){
+        const background = this.add.image(0, 0, 'background').setOrigin(0,0);
+
+        this.add.text(300, 250, 'Main Menu', { fontSize: '32px', fill: '#fff' });
+        let startButton = this.add.text(350, 300, 'Choose Difficulty ', { fontSize: '32px', fill: '#fff' })
+        .setInteractive()
+        .on('pointerdown', () => {
+            this.scene.start('start_scene'); // Transition to the game scene
+        });
+
+    // Center the text
+    startButton.setOrigin(0.5);
+        
+    }
+}
+
 class start_scene extends Phaser.Scene {
 
     constructor() {
         super('start_scene');
     }
     preload(){
-        this.load.image('background', './assets/background.png');
+        this.load.image('background', './assets/pixel_space.jpg');
     }
     create() {
         const background = this.add.image(0, 0, 'background').setOrigin(0,0);
@@ -38,7 +61,7 @@ class easy_scene extends Phaser.Scene {
         ];
     }
     preload() {
-        this.load.image('background', './assets/background.png');
+        this.load.image('background', './assets/pixel_space.jpg');
         this.load.image('ship', './assets/playerShip2_green.png',{frameWidth: 32, frameHeight: 32});
         this.load.image('laser', './assets/laser.png');
         this.enemy_colours.forEach((enemy_type) => {
@@ -51,7 +74,7 @@ class easy_scene extends Phaser.Scene {
         const background = this.add.image(0, 0, 'background').setOrigin(0,0);
 
         // Create the ship sprite and add arcade physics to it
-        this.ship = this.physics.add.sprite(385, 500, 'ship');
+        this.ship = this.physics.add.sprite(385, 900, 'ship');
         this.physics.world.setBounds(0, 0, background.width, background.height);
         this.ship.setCollideWorldBounds(true);
 
@@ -182,7 +205,7 @@ class easy_scene extends Phaser.Scene {
 const config = {
     type: Phaser.AUTO,
     width: 800,
-    height: 600,
+    height: 1024,
     backgroundColor: '#2d2d2d',
     parent: 'game-container',
     physics: {
@@ -199,7 +222,7 @@ const config = {
             }
         }
     },
-    scene: [start_scene, easy_scene]
+    scene: [main_menu, start_scene, easy_scene]
 };
 
 const game = new Phaser.Game(config);

@@ -252,7 +252,7 @@ class game_scene extends Phaser.Scene {
                     
                 // Return to the main menu after a delay
                 this.time.delayedCall(4000, () => {
-                    this.scene.start('start_scene'); 
+                    this.scene.start('main_menu'); 
                 });
             }
         });
@@ -272,7 +272,7 @@ const config = {
     physics: {
         default: 'arcade',
         matter: {
-            debug: false,
+            debug: true,
             plugins: {
                 wrap: true // plugin for world wrapping
   

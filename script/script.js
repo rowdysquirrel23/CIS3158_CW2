@@ -1,15 +1,19 @@
+// The main menu of the game
 class main_menu extends Phaser.Scene {
     constructor(){
         super('main_menu');
     }
     preload(){
+        // load images
         this.load.image('background', './assets/pixel_space.jpg');
         this.load.image('instructions', './assets/instructions.jpg');
+        this.load.image('title', './assets/title.png');
     }
     create(){
+        //Add elements into the game
         const background = this.add.image(0, 0, 'background').setOrigin(0,0);
 
-        this.add.text(300, 250, 'Main Menu', { fontSize: '32pt', fill: '#DE3163', fontStyle: 'bold'});
+        this.add.image(400, 350, 'title' ).setScale(0.5);
         let start_button = this.add.text(425, 400, 'Choose Difficulty ', { fontSize: '24pt', fill: '#fff', fontStyle: 'bold' })
         .setInteractive()
         .on('pointerdown', () => {
@@ -22,7 +26,7 @@ class main_menu extends Phaser.Scene {
         
     }
 }
-
+// This scene allows users to choose a difficulty
 class start_scene extends Phaser.Scene {
 
     constructor() {
@@ -30,12 +34,12 @@ class start_scene extends Phaser.Scene {
     }
     preload(){
         this.load.image('background', './assets/pixel_space.jpg');
+        this.load.image('difficulty_select', './assets/choose_difficulty.png');
     }
     create() {
         const background = this.add.image(0, 0, 'background').setOrigin(0,0);
         // Display Start text
-        this.add.text(200, 225, 'Choose Difficulty', { fontSize: '32pt', fill: '#DE3163', fontStyle: 'bold' });
-
+        this.add.image(425, 300, 'difficulty_select').setScale(0.5);
         // Start button that changes the difficulty of the game
         let easy_button = this.add.text(350, 300, 'Easy', { fontSize: '24pt', fill: '#fff', fontStyle: 'bold' })
             .setInteractive()
@@ -57,7 +61,7 @@ class start_scene extends Phaser.Scene {
     }
 
 }
-
+// The scence containing the gameplay elements
 class game_scene extends Phaser.Scene {
     constructor() {
         super('game_scene');
@@ -80,6 +84,7 @@ class game_scene extends Phaser.Scene {
         this.load.image('background', './assets/pixel_space.jpg');
         this.load.image('ship', './assets/playerShip2_green.png',{frameWidth: 32, frameHeight: 32});
         this.load.image('laser', './assets/laser.png');
+        // loop through the different colour of enemy
         this.enemy_colours.forEach((enemy_type) => {
             this.load.image(`enemy_${enemy_type}`, `./assets/${enemy_type}`);
         });
@@ -106,8 +111,9 @@ class game_scene extends Phaser.Scene {
             callbackScope: this,
             loop: true // Makes the ship continuosly shoot lasers
         });
+        // Charachteristics to spawn enemies
         this.time.addEvent({
-            delay: 2000,
+            delay: 1500, // Every 1.5 seconds an enemy is spawned
             callback: this.spawn_enemy,
             callbackScope: this,
             loop: true
@@ -149,7 +155,7 @@ class game_scene extends Phaser.Scene {
     }
     fire_laser() {
         // Shoots the lasers out of the ship
-        const laser = this.lasers.create(this.ship.x, this.ship.y - 20, 'laser');
+        const laser = this.lasers.create(this.ship.x, this.ship.y - 20, 'laser').setScale(2);
         laser.setVelocityY(-400); 
     }
     spawn_enemy() {
@@ -269,6 +275,10 @@ const config = {
     height: 1024,
     backgroundColor: '#2d2d2d',
     parent: 'game-container',
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
         default: 'arcade',
         matter: {
